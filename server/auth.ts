@@ -38,7 +38,11 @@ export function setupAuth(app: Express) {
     resave: false,
     saveUninitialized: false,
     store: storage.sessionStore,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 1 week
+    cookie: { 
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      secure: app.get("env") === "production",
+      sameSite: app.get("env") === "production" ? "lax" : undefined,
+    },
   };
 
   if (app.get("env") === "production") {
